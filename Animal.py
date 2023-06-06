@@ -1,0 +1,63 @@
+import random
+
+from Organism import Organism
+
+
+class Animal(Organism):
+    def __init__(self, new_world, new_location, new_strength, new_initiative, new_type, new_speed):
+        super().__init__(new_world, new_location, new_strength, new_initiative, new_type)
+        self.speed = new_speed
+
+    def decide_where_to_move(self):
+        return random.randint(0, self.get_map().directions_num + 1)
+
+    def choose_new_location(self):
+        new_direction = self.decide_where_to_move()
+
+        if new_direction == (self.get_map().directions_num + 1):
+            return self.location
+        else:
+            new_location = self.location.get_neighbour_location(new_direction)
+
+            if self.get_map().on_map(new_location):
+                return new_location
+            else:
+                return self.location
+
+    def move(self):
+        new_location = self.choose_new_location()
+
+        if new_location != self.location:
+            if self.get_map()[new_location] is not None:
+                self.pre_collision(self.get_map()[new_location])
+            else:
+                self.update_location(new_location)
+
+    def mate(self):
+        new_location = self.get_map().get_first_free_neighbour(self.location)
+
+        if new_location is not None:
+            return self.world.add_organism(self.spawn_offspring(new_location))
+        else:
+            return None
+
+    def reflect_attak(self, attacker):
+        return False
+
+    def pre_collision(self, autochton):
+        autochton.collision(self)
+
+    def action(self):
+        self.move()
+
+    def collision(self, invader):
+        if invader.get_type() == self.get_type():
+            self.mate()
+        elif not invader.reflect_attack(self):
+            super().collision(invader)
+
+    def __str__(self):
+        return "Animal at " + str(self.location)
+
+    def get_speed(self):
+        return self.speed

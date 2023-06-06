@@ -3,6 +3,11 @@ import random
 from Organism import Organism
 
 
+BASE_ANIMAL_INITIATIVE = 0
+BASE_ANIMAL_STRENGTH = 0
+BASE_ANIMAL_SPEED = 1
+
+
 class Animal(Organism):
     def __init__(self, new_world, new_location, new_strength, new_initiative, new_type, new_speed):
         super().__init__(new_world, new_location, new_strength, new_initiative, new_type)
@@ -41,7 +46,7 @@ class Animal(Organism):
         else:
             return None
 
-    def reflect_attak(self, attacker):
+    def reflect_attack(self, attacker):
         return False
 
     def pre_collision(self, autochton):

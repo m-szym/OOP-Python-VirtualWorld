@@ -1,11 +1,12 @@
 class MapLocation:
-    # def __init__(self, new_coords):
-    #     self.coords = new_coords
-    #     self.coords_num = len(new_coords)
+    def __init__(self, new_coords):
+        self.coords = new_coords
 
-    def __init__(self, other_location):
-        self.coords = other_location.coords
-        self.coords_num = other_location.coords_num
+    @classmethod
+    def copy(cls, other_location):
+        location = cls(other_location.coords)
+        # location.coords = other_location.coords
+        return location
 
     def __eq__(self, other):
         if not isinstance(other, MapLocation):
@@ -22,27 +23,34 @@ class MapLocation:
         string_form += ")"
         return string_form
 
-    def get_neighbour_location(self, direction):
-        pass
-
 
 #    N
 #   W W
 #    S
 
 
-SQUARE_DIRS = {
-    "E": (1, 0),
-    "S": (0, 1),
-    "W": (-1, 0),
-    "N": (0, -1)
-}
+# SQUARE_DIRS = {
+#     "E": (1, 0),
+#     "S": (0, 1),
+#     "W": (-1, 0),
+#     "N": (0, -1)
+# }
+
+# SQUARE_DIRS = [
+#     (1, 0),
+#     (0, 1),
+#     (-1, 0),
+#     (0, -1)
+# ]
 
 
 class SquareLocation(MapLocation):
-    def __init__(self, x, y):
-        self.coords = (x, y)
-        self.coords_num = 2
+    # def __init__(self, x, y):
+    #     self.coords = (x, y)
+    #     # self.coords_num = 2
+
+    def __init__(self, new_coords):
+        super().__init__(new_coords)
 
     def get_x(self):
         return self.coords[0]
@@ -50,32 +58,48 @@ class SquareLocation(MapLocation):
     def get_y(self):
         return self.coords[1]
 
-    def __add__(self, other):
-        return SquareLocation(self.get_x() + other.get_x(), self.get_y() + other.get_y())
+    def __add__(self, other_location):
+        return SquareLocation((self.get_x() + other_location.get_x(), self.get_y() + other_location.get_y()))
 
     def __mul__(self, scale):
-        return SquareLocation(self.get_x() * scale, self.get_y() * scale)
+        return SquareLocation((self.get_x() * scale, self.get_y() * scale))
 
     def get_neighbour_location(self, direction):
-        return self + SquareLocation(*SQUARE_DIRS[direction])
+        return self + SQUARE_DIRS[direction]
 
     def get_far_neighbour_location(self, direction, distance):
-        return self + (SquareLocation(*SQUARE_DIRS[direction]) * distance)
+        return self + (SQUARE_DIRS[direction] * distance)
 
+
+SQUARE_DIRS = [
+    SquareLocation((1, 0)),
+    SquareLocation((0, 1)),
+    SquareLocation((-1, 0)),
+    SquareLocation((0, -1))
+]
 
 #    NW NE
 #   W     E
 #    SW SE
 
 
-HEX_DIRS = {
-    "E": (1, 0, -1),
-    "SE": (0, 1, -1),
-    "SW": (-1, 1, 0),
-    "W": (-1, 0, 1),
-    "NW": (0, -1, 1),
-    "NE": (1, -1, 0)
-}
+# HEX_DIRS = {
+#     "E": (1, 0, -1),
+#     "SE": (0, 1, -1),
+#     "SW": (-1, 1, 0),
+#     "W": (-1, 0, 1),
+#     "NW": (0, -1, 1),
+#     "NE": (1, -1, 0)
+# }
+
+HEX_DIRS = [
+    (1, 0, -1),
+    (0, 1, -1),
+    (-1, 1, 0),
+    (-1, 0, 1),
+    (0, -1, 1),
+    (1, -1, 0)
+]
 
 
 class HexLocation(MapLocation):
@@ -83,9 +107,9 @@ class HexLocation(MapLocation):
         self.coords = (q, r, s)
         self.coords_num = 3
 
-    def __init__(self, q, r):
-        self.coords = (q, r, -q-r)
-        self.coords_num = 3
+    # def __init__(self, q, r):
+    #     self.coords = (q, r, -q-r)
+    #     self.coords_num = 3
 
     def get_q(self):
         return self.coords[0]

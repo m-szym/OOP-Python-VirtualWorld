@@ -97,7 +97,7 @@ class SquareMap(Map):
                 if self.internal_map[SquareLocation(x, y)] is None:
                     print("_", end="")
                 else:
-                    print("O", end="")
+                    print(f"{self.internal_map[SquareLocation(x, y)].get_type()[0]}", end="")
             print()
 
 

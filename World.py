@@ -34,6 +34,14 @@ class World:
             print(f"Organism {str(organism.get_location())} out of map")
             return None
 
+    def make_turn(self):
+        self.turn += 1
+        for organism in self.organisms:
+            organism.action()
+
+    def sort_organisms(self):
+        self.organisms.sort()
+
     def get_map(self):
         return self.map
 

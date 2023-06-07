@@ -14,12 +14,12 @@ class Animal(Organism):
         self.speed = new_speed
 
     def decide_where_to_move(self):
-        return random.randint(0, self.get_map().directions_num + 1)
+        return random.randint(0, self.get_map().directions_num)
 
     def choose_new_location(self):
         new_direction = self.decide_where_to_move()
 
-        if new_direction == (self.get_map().directions_num + 1):
+        if new_direction == self.get_map().directions_num:
             return self.location
         else:
             new_location = self.location.get_neighbour_location(new_direction)

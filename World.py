@@ -1,6 +1,6 @@
 from Maps import SquareMap, HexMap
 
-from Organism import Organism
+from Organism import Organism, DEAD_STATE
 
 
 class World:
@@ -33,6 +33,12 @@ class World:
         except KeyError:
             print(f"Organism {str(organism.get_location())} out of map")
             return None
+
+    def clean_board(self):
+        for organism in self.organisms:
+            if organism.get_state() == DEAD_STATE:
+                self.map[organism.get_location()] = None
+                self.organisms.remove(organism)
 
     def make_turn(self):
         self.turn += 1

@@ -2,7 +2,6 @@ import random
 
 from Organism import Organism
 
-
 BASE_ANIMAL_INITIATIVE = 0
 BASE_ANIMAL_STRENGTH = 0
 BASE_ANIMAL_SPEED = 1
@@ -33,8 +32,9 @@ class Animal(Organism):
         new_location = self.choose_new_location()
 
         if new_location != self.location:
-            if self.get_map()[new_location] is not None:
-                self.pre_collision(self.get_map()[new_location])
+            t = self.get_map()[new_location]
+            if t is not None:
+                self.pre_collision(t)
             else:
                 self.update_location(new_location)
 
@@ -66,3 +66,5 @@ class Animal(Organism):
 
     def get_speed(self):
         return self.speed
+
+

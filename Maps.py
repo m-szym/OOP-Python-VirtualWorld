@@ -132,12 +132,31 @@ class HexMap(Map):
     def __init__(self, size):
         self.directions = HEX_DIRS
         self.directions_num = len(HEX_DIRS)
+        self.internal_map = {}
+
         self.size = size
-        super().__init__()
+        # super().__init__()
+        self.create_map()
 
     def create_map(self):
-        for q in range(-self.size, self.size):
+        for q in range(-self.size, self.size + 1):
             r1 = max(-self.size, -q - self.size)
             r2 = min(self.size, -q + self.size)
-            for r in range(r1, r2):
-                self.internal_map[HexLocation(q, r)] = None
+            for r in range(r1, r2 + 1):
+                self.internal_map[HexLocation((q, r, -q - r))] = None
+
+    def print_map(self):
+        for q in range(-self.size, self.size + 1):
+            r1 = max(-self.size, -q - self.size)
+            r2 = min(self.size, -q + self.size)
+
+            for i in range(-self.size, self.size - r2 + r1):
+                print(" ", end="")
+
+            for r in range(r1, r2 + 1):
+                if self.internal_map[HexLocation((q, r, -q - r))] is None:
+                    print("_", end="")
+                else:
+                    print(f"{self.internal_map[HexLocation((q, r, -q - r))].get_type()[0]}", end="")
+                print(" ", end="")
+            print()

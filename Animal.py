@@ -32,11 +32,14 @@ class Animal(Organism):
         new_location = self.choose_new_location()
 
         if new_location != self.location:
+            print(str(self) + " might move to " + str(new_location))
             t = self.get_map()[new_location]
             if t is not None:
                 self.pre_collision(t)
             else:
                 self.update_location(new_location)
+        else:
+            print(str(self) + " did not move")
 
     def mate(self):
         new_location = self.get_map().get_first_free_neighbour(self.location)

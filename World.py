@@ -1,6 +1,9 @@
-from Maps import SquareMap, HexMap
+import pickle
 
+from Maps import SquareMap, HexMap
 from Organism import Organism, DEAD_STATE
+
+SAVE_DIR = "saves/"
 
 
 class World:
@@ -44,6 +47,18 @@ class World:
         self.turn += 1
         for organism in self.organisms:
             organism.action()
+
+    def save(self, file_name):
+        with open(SAVE_DIR + file_name, 'wb') as file:
+            pickle.dump(self, file, pickle.HIGHEST_PROTOCOL)
+            print(f'World successfully saved to "{file_name}"')
+
+    @classmethod
+    def load(cls, file_name):
+        with open(SAVE_DIR + file_name, 'rb') as inp:
+            world = pickle.load(inp)
+            print(f'World successfully loaded from "{file_name}"')
+            return world
 
     def sort_organisms(self):
         self.organisms.sort()

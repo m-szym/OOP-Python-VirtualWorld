@@ -7,6 +7,7 @@ HUMAN_TYPE = "HUMAN"
 HUMAN_SKILL_COOLDOWN = 5
 HUMAN_SKILL_DURATION = 5
 
+
 class Human(Animal):
     def __init__(self, new_location, new_world):
         super().__init__(new_world, new_location, HUMAN_STRENGTH, HUMAN_INITIATIVE, HUMAN_SPEED, HUMAN_TYPE)
@@ -36,7 +37,7 @@ class Human(Animal):
             self.balefire()
 
     def balefire(self):
-        self.get_map().do_on_all_neighbours(lambda x: x.kill_self())
+        self.get_map().do_on_all_neighbours(self.location, kill_target)
 
     def action(self):
         self.skill()
@@ -57,3 +58,8 @@ class Human(Animal):
                 return True
         else:
             return False
+
+
+def kill_target(imap, loc):
+    if imap[loc] is not None:
+        imap[loc].kill_self()

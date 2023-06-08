@@ -1,4 +1,5 @@
 # This is a sample Python script.
+import pickle
 import random
 
 import MapLocations
@@ -15,7 +16,7 @@ from Sheep import Sheep
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # print_hi('PyCharm')
-    world = w.World.square_map(10, 10)
+    # world = w.World.square_map(10, 10)
     # # world.add_organism(Organism(world, MapLocations.SquareLocation(0, 0)))
     # world.add_organism(Sheep(world, MapLocations.SquareLocation(5, 5)))
     # world.map.print_map()
@@ -51,16 +52,28 @@ if __name__ == '__main__':
     # p = world.map.bfs(MapLocations.SquareLocation((0, 0)), targeter)
     # for i in p:
     #     print(i)
-    cs = world.add_organism(CyberSheep(world, MapLocations.SquareLocation((5, 0))))
-    h = world.add_organism(Hogweed(world, MapLocations.SquareLocation((5, 5))))
+    # cs = world.add_organism(CyberSheep(world, MapLocations.SquareLocation((5, 0))))
+    # h = world.add_organism(Hogweed(world, MapLocations.SquareLocation((5, 5))))
+    #
+    # world.map.print_map()
+    # world.save("test1")
+    # world2 = w.World.load("test1")
+    # world2.map.print_map()
 
-    # cs.choose_new_location()
-    for i in range(0, 10):
-        print("Turn " + str(i))
-        world.clean_board()
-        world.make_turn()
-        world.map.print_map()
+
+    # # cs.choose_new_location()
+    # for i in range(0, 10):
+    #     print("Turn " + str(i))
+    #     world.clean_board()
+    #     world.make_turn()
+    #     world.map.print_map()
 
     # world.map.print_map()
-
+    h = w.World.hex_map(5)
+    s = h.add_organism(Sheep(h, MapLocations.HexLocation((0, 0, 0))))
+    for i in range(0, 10):
+        print("Turn " + str(i))
+        h.clean_board()
+        h.make_turn()
+        h.map.print_map()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

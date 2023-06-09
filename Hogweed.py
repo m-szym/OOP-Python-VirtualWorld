@@ -7,12 +7,12 @@ HOGWEED_TYPE = "HOGWEED"
 
 
 class Hogweed(Plant):
-    def __init__(self, new_location, new_world):
-        super().__init__(new_location, new_world, HOGWEED_STRENGTH, HOGWEED_INITIATIVE, HOGWEED_TYPE,
+    def __init__(self, new_world, new_location):
+        super().__init__(new_world, new_location, HOGWEED_STRENGTH, HOGWEED_INITIATIVE, HOGWEED_TYPE,
                          HOGWEED_SEEDING_THRESHOLD)
 
     def spawn_offspring(self, new_location):
-        return Hogweed(new_location, self.world)
+        return Hogweed(self.world, new_location)
 
     def __str__(self):
         return "Hogweed at " + str(self.location)

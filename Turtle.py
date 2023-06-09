@@ -12,11 +12,11 @@ TURTLE_DEFENCE = 5
 
 
 class Turtle(Animal):
-    def __init__(self, new_location, new_world):
-        super().__init__(new_location, new_world, TURTLE_STRENGTH, TURTLE_INITIATIVE, TURTLE_TYPE, TURTLE_SPEED)
+    def __init__(self, new_world, new_location):
+        super().__init__(new_world, new_location, TURTLE_STRENGTH, TURTLE_INITIATIVE, TURTLE_TYPE, TURTLE_SPEED)
 
     def spawn_offspring(self, new_location):
-        return Turtle(new_location, self.world)
+        return Turtle(self.world, new_location)
 
     def __str__(self):
         return "Turtle at " + str(self.location)

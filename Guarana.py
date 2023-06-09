@@ -8,11 +8,11 @@ GUARANA_STRENGTH_BONUS = 3
 
 
 class Guarana(Plant):
-    def __init__(self, new_location, new_world):
+    def __init__(self, new_world, new_location):
         super().__init__(new_world, new_location, GUARANA_STRENGTH, GUARANA_INITIATIVE, GUARANA_TYPE, GUARANA_SEEDING_THRESHOLD)
 
     def spawn_offspring(self, new_location):
-        return Guarana(new_location, self.world)
+        return Guarana(self.world, new_location)
 
     def __str__(self):
         return "Guarana at " + str(self.location)

@@ -11,11 +11,11 @@ ANTELOPE_ESCAPE_CHANCE_THRESHOLD = 5
 
 
 class Antelope(Animal):
-    def __init__(self, new_location, new_world):
-        super().__init__(new_location, new_world, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_TYPE, ANTELOPE_SPEED)
+    def __init__(self, new_world, new_location):
+        super().__init__(new_world, new_location, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_TYPE, ANTELOPE_SPEED)
 
     def spawn_offspring(self, new_location):
-        return Antelope(new_location, self.world)
+        return Antelope(self.world, new_location)
 
     def __str__(self):
         return "Antelope at " + str(self.location)

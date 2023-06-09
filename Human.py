@@ -9,8 +9,8 @@ HUMAN_SKILL_DURATION = 5
 
 
 class Human(Animal):
-    def __init__(self, new_location, new_world):
-        super().__init__(new_world, new_location, HUMAN_STRENGTH, HUMAN_INITIATIVE, HUMAN_SPEED, HUMAN_TYPE)
+    def __init__(self, new_world, new_location):
+        super().__init__(new_world, new_location, HUMAN_STRENGTH, HUMAN_INITIATIVE, HUMAN_TYPE, HUMAN_SPEED)
         self.skill_cooldown = HUMAN_SKILL_COOLDOWN
         self.skill_duration_left = 0
         self.skill_active = False
@@ -50,7 +50,7 @@ class Human(Animal):
 
     def give_command(self, command):
         if command <= self.get_map().directions_num:
-            self.direction = command
+            self.direction = command - 100
             return True
         elif command == 200:
             if self.skill_cooldown == 0 and not self.skill_active:

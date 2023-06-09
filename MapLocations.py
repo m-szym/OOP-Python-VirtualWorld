@@ -33,7 +33,7 @@ class MapLocation:
 
 
 #    N
-#   W W
+#   W E
 #    S
 
 
@@ -98,7 +98,14 @@ SQUARE_DIRS = [
 #     "NW": (0, -1, 1),
 #     "NE": (1, -1, 0)
 # }
-
+# HEX_DIRS = [
+#     HexLocation((1, 0, -1)),
+#     HexLocation((0, 1, -1)),
+#     HexLocation((-1, 1, 0)),
+#     HexLocation((-1, 0, 1)),
+#     HexLocation((0, -1, 1)),
+#     HexLocation((1, -1, 0))
+# ]
 
 class HexLocation(MapLocation):
     def __init__(self, coords):

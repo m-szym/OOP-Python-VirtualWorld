@@ -7,11 +7,11 @@ CYBER_SHEEP_TYPE = "CYBER_SHEEP"
 
 
 class CyberSheep(Animal):
-    def __init__(self, new_location, new_world):
-        super().__init__(new_location, new_world, CYBER_SHEEP_STRENGTH, CYBER_SHEEP_INITIATIVE, CYBER_SHEEP_TYPE, CYBER_SHEEP_SPEED)
+    def __init__(self, new_world, new_location):
+        super().__init__(new_world, new_location, CYBER_SHEEP_STRENGTH, CYBER_SHEEP_INITIATIVE, CYBER_SHEEP_TYPE, CYBER_SHEEP_SPEED)
 
     def spawn_offspring(self, new_location):
-        return CyberSheep(new_location, self.world)
+        return CyberSheep(self.world, new_location)
 
     def __str__(self):
         return "Cyber Sheep at " + str(self.location)

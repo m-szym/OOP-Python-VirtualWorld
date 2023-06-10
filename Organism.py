@@ -1,4 +1,22 @@
-ORGANISM_TYPE = "Organism"
+ORGANISM_TYPES = {
+    "Organism": "0rganism",
+
+    "Animal": "4nimal",
+    "Sheep": "Sheep",
+    "Wolf": "Wolf",
+    "Fox": "Fox",
+    "Turtle": "Turtle",
+    "Antelope": "Antelope",
+    "CyberSheep": "CyberSheep",
+    "Human": "Human",
+
+    "Plant": "9lant",
+    "Grass": "grass",
+    "Dandelion": "dandelion",
+    "Guarana": "uarana",
+    "Nightshade": "nightshade",
+    "Hogweed": "hogweed",
+}
 
 ALIVE_STATE = "Alive"
 DEAD_STATE = "Dead"
@@ -7,7 +25,7 @@ DEAD_STATE = "Dead"
 class Organism:
     organism_count = 0
 
-    def __init__(self, new_world, new_location, new_strength=0, new_initiative=0, new_type=ORGANISM_TYPE):
+    def __init__(self, new_world, new_location, new_strength=0, new_initiative=0, new_type=ORGANISM_TYPES["Organism"]):
         self.world = new_world
         self.type = new_type
 
@@ -74,6 +92,9 @@ class Organism:
 
     def get_strength(self):
         return self.strength
+
+    def set_strength(self, new_strength):
+        self.strength = new_strength
 
     def get_location(self):
         return self.location

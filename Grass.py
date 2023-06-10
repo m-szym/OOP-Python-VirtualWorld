@@ -1,14 +1,15 @@
 from Plant import *
+from Organism import ORGANISM_TYPES
 
 GRASS_SEEDING_THRESHOLD = BASE_PLANT_SEEDING_THRESHOLD
 GRASS_STRENGTH = BASE_PLANT_STRENGTH
 GRASS_INITIATIVE = BASE_PLANT_INITIATIVE
-GRASS_TYPE = "GRASS"
+
 
 
 class Grass(Plant):
     def __init__(self, new_world, new_location):
-        super().__init__(new_world, new_location, GRASS_STRENGTH, GRASS_INITIATIVE, GRASS_TYPE, GRASS_SEEDING_THRESHOLD)
+        super().__init__(new_world, new_location, GRASS_STRENGTH, GRASS_INITIATIVE, ORGANISM_TYPES["Grass"], GRASS_SEEDING_THRESHOLD)
 
     def spawn_offspring(self, new_location):
         return Grass(self.world, new_location)

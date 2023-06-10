@@ -3,6 +3,7 @@ import pygame_gui as pgui
 
 import MapLocations
 import Maps
+from Human import Human
 from Menu import AddOrganismSubMenu
 import World
 
@@ -25,6 +26,7 @@ square_human_controls = [
     pg.K_DOWN,
     pg.K_LEFT,
     pg.K_RIGHT,
+    pg.K_SPACE,
 ]
 
 hex_human_controls = [
@@ -34,6 +36,7 @@ hex_human_controls = [
     pg.K_x,
     pg.K_z,
     pg.K_a,
+    pg.K_SPACE,
 ]
 
 
@@ -71,7 +74,7 @@ class Simulator:
                         window_width=BASE_WINDOW_WIDTH,
                         window_height=BASE_WINDOW_HEIGHT,
                         window_title="Marek Szymanski 193229 ProgOb Projekt 3",
-                        background_color='#ffffff'):
+                        background_color='#000000'):
         self.w = window_width
         self.h = window_height
 
@@ -107,18 +110,21 @@ class Simulator:
             raise Exception("Unknown map type")
 
         self.icons = {
-            "Sheep": pg.image.load("icons/sheep.png"),
-            "Wolf": pg.image.load("icons/wolf.png"),
-            "Turtle": pg.image.load("icons/turtle.png"),
-            "Antelope": pg.image.load("icons/antelope.png"),
-            "Fox": pg.image.load("icons/fox.png"),
-            "Grass": pg.image.load("icons/grass.png"),
-            "Dandelion": pg.image.load("icons/dandelion.png"),
-            "Guarana": pg.image.load("icons/guarana.png"),
-            "Nightshade": pg.image.load("icons/nightshade.png"),
-            "Hogweed": pg.image.load("icons/hogweed.png"),
-            "Human": pg.image.load("icons/human.png"),
-            "CyberSheep": pg.image.load("icons/cybersheep.png"),
+            "Sheep": pg.image.load("icons/icon_Sheep.jpg"),
+            "Wolf": pg.image.load("icons/icon_Wolf.png"),
+            "Turtle": pg.image.load("icons/icon_Turtle.jpg"),
+            "Antelope": pg.image.load("icons/icon_Antelope.png"),
+            "Fox": pg.image.load("icons/icon_Fox.jpg"),
+
+            "grass": pg.image.load("icons/icon_grass.png"),
+            "dandelion": pg.image.load("icons/icon_dandellion.png"),
+            "uarana": pg.image.load("icons/icon_uarana.jpg"),
+            "nightshade": pg.image.load("icons/icon_nightshade.jpg"),
+            "hogweed": pg.image.load("icons/icon_hogweed.jpg"),
+            "Human": pg.image.load("icons/icon_Human.jpg"),
+            "CyberSheep": pg.image.load("icons/icon_CyberSheep.jpg"),
+
+            "blank": pg.image.load("icons/icon_blank.jpg"),
         }
 
     def init_square_map_visualizer(self, imap):
@@ -164,12 +170,7 @@ class Simulator:
         #                                             html_text="<b>Menu</b>",
         #                                             manager=self.manager)
 
-        self.load_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, MENU_Y_OFFSET),
-                                                                        MENU_BUTTON_SIZE),
-                                                  text='Load',
-                                                  manager=self.manager)
-
-        self.save_button = pgui.elements.UIButton(relative_rect=pg.Rect((MENU_BUTTON_SIZE[0], MENU_Y_OFFSET),
+        self.save_button = pgui.elements.UIButton(relative_rect=pg.Rect((600, MENU_Y_OFFSET),
                                                                         MENU_BUTTON_SIZE),
                                                   text='Save',
                                                   manager=self.manager)
@@ -217,10 +218,17 @@ class Simulator:
     def update_map_visualizer(self):
         for button in self.buttons:
             if self.world.map[button.map_location] is None:
-                button.set_text('')
+                button.drawable_shape.states['normal'].surface.blit(self.icons["blank"], (0, 0))
+                button.drawable_shape.states['hovered'].surface.blit(self.icons["blank"], (0, 0))
+                button.drawable_shape.states['active'].surface.blit(self.icons["blank"], (0, 0))
             else:
-                if self.world.map[button.map_location].get_type() == "SHEEP":
-                    button.drawable_shape.states['normal'] = self.icons['Sheep']
+                type = self.world.map[button.map_location].get_type()
+                if type in self.icons:
+                    button.drawable_shape.states['normal'].surface.blit(self.icons[type], (0, 0))
+                    button.drawable_shape.states['hovered'].surface.blit(self.icons[type], (0, 0))
+                    button.drawable_shape.states['active'].surface.blit(self.icons[type], (0, 0))
+            button.drawable_shape.active_state.has_fresh_surface = True
+
 
 
     def manage_events(self):
@@ -243,9 +251,7 @@ class Simulator:
                 if not self.main_menu_active:
                     if event.ui_element == self.save_button:
                         self.clog += "<br>Save button pressed"  # todo: world.save()
-
-                    elif event.ui_element == self.load_button:
-                        self.clog += "<br>Load button pressed"  # todo: world.load() re-init map visualizer and more ???
+                        self.world.save("savefile")
 
                     elif event.ui_element in self.ao_submenu:
                         self.ao_submenu.manage_events(event)
@@ -260,11 +266,23 @@ class Simulator:
                     if event.ui_element == self.square_world_button:
                         self.world = World.World.square_map(int(self.dimension_x_entry.get_text()),
                                                             int(self.dimension_y_entry.get_text()))
+                        h = self.world.add_organism(Human(self.world, MapLocations.SquareLocation((0, 0))))
+                        self.world.set_human(h)
+
                         self.delete_main_menu()
                         self.init_game_visualizer()
 
                     elif event.ui_element == self.hex_world_button:
                         self.world = World.World.hex_map(int(self.dimension_x_entry.get_text()))
+                        h = self.world.add_organism(Human(self.world, MapLocations.HexLocation((0, 0, 0))))
+                        self.world.set_human(h)
+
+                        self.delete_main_menu()
+                        self.init_game_visualizer()
+
+                    elif event.ui_element == self.load_world_button:
+                        self.world = World.World.load("savefile")
+
                         self.delete_main_menu()
                         self.init_game_visualizer()
 
@@ -288,39 +306,47 @@ class Simulator:
 
     def square_human_commands(self, key_pressed):
         if key_pressed == pg.K_UP:
-            self.world.get_human().give_comamnd(103)
+            self.world.get_human().give_command(103)
         elif key_pressed == pg.K_RIGHT:
-            self.world.get_human().give_comamnd(100)
+            self.world.get_human().give_command(100)
         elif key_pressed == pg.K_DOWN:
-            self.world.get_human().give_comamnd(101)
+            self.world.get_human().give_command(101)
         elif key_pressed == pg.K_LEFT:
-            self.world.get_human().give_comamnd(102)
+            self.world.get_human().give_command(102)
         elif key_pressed == pg.K_SPACE:
             self.world.get_human().give_command(200)
 
     def main_menu(self):
-        self.square_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 0), (100, 30)),
+        self.square_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 0), (200, 30)),
                                                           text='Square world',
                                                           manager=self.manager)
-        self.hex_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 40), (100, 30)),
+        self.hex_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 40), (200, 30)),
                                                        text='Hex world',
                                                        manager=self.manager)
         self.main_menu_active = True
 
-        self.dimension_x_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 80), (100, 30)),
+        self.dimension_x_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 80), (200, 30)),
+                                                               initial_text='width / radius',
                                                                manager=self.manager)
-        self.dimension_y_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 120), (100, 30)),
+        self.dimension_y_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 120), (200, 30)),
+                                                               initial_text='height',
                                                                manager=self.manager)
+
+        self.load_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 160), (200, 30)),
+                                                        text='Load world',
+                                                        manager=self.manager)
 
     def delete_main_menu(self):
         self.square_world_button.kill()
         self.hex_world_button.kill()
         self.dimension_x_entry.kill()
         self.dimension_y_entry.kill()
+        self.load_world_button.kill()
 
         del self.square_world_button
         del self.hex_world_button
         del self.dimension_x_entry
         del self.dimension_y_entry
+        del self.load_world_button
 
         self.main_menu_active = False

@@ -1,15 +1,15 @@
 from Plant import *
+from Organism import ORGANISM_TYPES
 
 DANDELION_SEEDING_THRESHOLD = BASE_PLANT_SEEDING_THRESHOLD
 DANDELION_STRENGTH = BASE_PLANT_STRENGTH
 DANDELION_INITIATIVE = BASE_PLANT_INITIATIVE
-DANDELION_TYPE = "DANDELION"
 DANDELION_SEEDING_ATTEMPTS = 3
 
 
 class Dandelion(Plant):
     def __init__(self, new_world, new_location):
-        super().__init__(new_world, new_location, DANDELION_STRENGTH, DANDELION_INITIATIVE, DANDELION_TYPE, DANDELION_SEEDING_THRESHOLD)
+        super().__init__(new_world, new_location, DANDELION_STRENGTH, DANDELION_INITIATIVE, ORGANISM_TYPES["Dandelion"], DANDELION_SEEDING_THRESHOLD)
 
     def spawn_offspring(self, new_location):
         return Dandelion(self.world, new_location)

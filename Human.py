@@ -1,17 +1,17 @@
 from Animal import Animal, BASE_ANIMAL_SPEED
+from Organism import ORGANISM_TYPES
 
 HUMAN_STRENGTH = 5
 HUMAN_INITIATIVE = 4
 HUMAN_SPEED = BASE_ANIMAL_SPEED
-HUMAN_TYPE = "HUMAN"
 HUMAN_SKILL_COOLDOWN = 5
 HUMAN_SKILL_DURATION = 5
 
 
 class Human(Animal):
     def __init__(self, new_world, new_location):
-        super().__init__(new_world, new_location, HUMAN_STRENGTH, HUMAN_INITIATIVE, HUMAN_TYPE, HUMAN_SPEED)
-        self.skill_cooldown = HUMAN_SKILL_COOLDOWN
+        super().__init__(new_world, new_location, HUMAN_STRENGTH, HUMAN_INITIATIVE, ORGANISM_TYPES["Human"], HUMAN_SPEED)
+        self.skill_cooldown = 0
         self.skill_duration_left = 0
         self.skill_active = False
         self.direction = self.get_map().directions_num
@@ -48,6 +48,7 @@ class Human(Animal):
     def activate_skill(self):
         self.skill_active = True
         self.skill_cooldown = HUMAN_SKILL_COOLDOWN
+        self.skill_duration_left = HUMAN_SKILL_DURATION
 
     def give_command(self, command):
         if command <= self.get_map().directions_num + 100:
@@ -56,6 +57,7 @@ class Human(Animal):
         elif command == 200:
             if self.skill_cooldown == 0 and not self.skill_active:
                 self.activate_skill()
+                self.tlog("ACTIVE SKILL")
                 return True
         else:
             return False

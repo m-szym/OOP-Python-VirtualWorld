@@ -1,18 +1,18 @@
 from random import randint
 
 from Animal import Animal
+from Organism import ORGANISM_TYPES
 
 ANTELOPE_STRENGTH = 4
 ANTELOPE_INITIATIVE = 4
 ANTELOPE_SPEED = 2
-ANTELOPE_TYPE = "ANTELOPE"
 ANTELOPE_ESCAPE_CHANCE_BASE = 10
 ANTELOPE_ESCAPE_CHANCE_THRESHOLD = 5
 
 
 class Antelope(Animal):
     def __init__(self, new_world, new_location):
-        super().__init__(new_world, new_location, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_TYPE, ANTELOPE_SPEED)
+        super().__init__(new_world, new_location, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ORGANISM_TYPES["Antelope"], ANTELOPE_SPEED)
 
     def spawn_offspring(self, new_location):
         return Antelope(self.world, new_location)

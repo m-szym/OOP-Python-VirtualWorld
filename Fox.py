@@ -1,14 +1,14 @@
 from Animal import Animal, BASE_ANIMAL_SPEED
+from Organism import ORGANISM_TYPES
 
 FOX_STRENGTH = 3
 FOX_INITIATIVE = 7
 FOX_SPEED = BASE_ANIMAL_SPEED
-FOX_TYPE = "FOX"
 
 
 class Fox(Animal):
     def __init__(self, new_world, new_location):
-        super().__init__(new_world, new_location, FOX_STRENGTH, FOX_INITIATIVE, FOX_TYPE, FOX_SPEED)
+        super().__init__(new_world, new_location, FOX_STRENGTH, FOX_INITIATIVE, ORGANISM_TYPES["Fox"], FOX_SPEED)
 
     def spawn_offspring(self, new_location):
         return Fox(self.world, new_location)

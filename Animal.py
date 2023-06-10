@@ -1,6 +1,6 @@
 import random
 
-from Organism import Organism
+from Organism import Organism, ORGANISM_TYPES
 
 BASE_ANIMAL_INITIATIVE = 0
 BASE_ANIMAL_STRENGTH = 0

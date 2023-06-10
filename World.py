@@ -81,6 +81,9 @@ class World:
     def get_human(self):
         return self.human
 
+    def set_human(self, human):
+        self.human = human
+
     def get_turn_log(self):
         return self.turn_log
 

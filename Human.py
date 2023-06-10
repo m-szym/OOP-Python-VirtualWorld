@@ -34,6 +34,7 @@ class Human(Animal):
             self.skill_cooldown = HUMAN_SKILL_COOLDOWN
 
         if self.skill_active:
+            self.tlog(" used skill")
             self.balefire()
 
     def balefire(self):
@@ -49,7 +50,7 @@ class Human(Animal):
         self.skill_cooldown = HUMAN_SKILL_COOLDOWN
 
     def give_command(self, command):
-        if command <= self.get_map().directions_num:
+        if command <= self.get_map().directions_num + 100:
             self.direction = command - 100
             return True
         elif command == 200:
@@ -59,7 +60,13 @@ class Human(Animal):
         else:
             return False
 
+    def __str__(self):
+        return "Human at " + str(self.location)
+
 
 def kill_target(imap, loc):
     if imap[loc] is not None:
+        imap[loc].tlog(" was erased from the pattern")
         imap[loc].kill_self()
+
+

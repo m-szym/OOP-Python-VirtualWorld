@@ -17,8 +17,7 @@ class Fox(Animal):
         return "Fox at " + str(self.location)
 
     def pre_collision(self, autochton):
-        if autochton.get_type() == FOX_TYPE:
-            # TODO: logger
-            return False
+        if autochton.get_strength() > self.get_strength():
+            self.tlog(" sensed " + str(autochton) + " and ran away")
         else:
-            return super().pre_collision(autochton)
+            super().pre_collision(autochton)

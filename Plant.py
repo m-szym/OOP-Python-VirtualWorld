@@ -26,6 +26,7 @@ class Plant(Organism):
         if r > self.seeding_threshold:
             free_loc = self.world.map.get_first_free_neighbour(self.location)
             if free_loc is not None:
+                self.tlog(" seeded at " + str(free_loc))
                 self.world.add_organism(self.spawn_offspring(free_loc))
 
     def __str__(self):

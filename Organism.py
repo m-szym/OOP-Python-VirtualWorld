@@ -40,20 +40,24 @@ class Organism:
         pass
 
     def fight(self, attacker):
-        if attacker.get_strength() >= self.strength:
+        if attacker.get_strength() <= self.strength:
+            self.tlog(" defends from " + str(attacker))
             attacker.kill_self()
         else:
+            attacker.tlog(" kills " + str(self))
             attacker.update_location(self.location)
             self.kill_self()
 
     def update_location(self, new_location):
+        self.tlog(" moved to " + str(new_location))
         self.world.map.move_org(self, new_location)
         self.location = new_location
 
     def kill_self(self):
         self.state = DEAD_STATE
+        self.tlog(" dies")
 
-        if self.world.map[self.location] == self.location:
+        if self.world.map[self.location] == self:
             self.world.map[self.location] = None
 
     def is_plant(self):
@@ -64,6 +68,9 @@ class Organism:
 
     def spawn_offspring(self, location):
         pass
+
+    def tlog(self, message):
+        self.world.add_to_turn_log(str(self) + message)
 
     def get_strength(self):
         return self.strength

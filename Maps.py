@@ -32,8 +32,9 @@ class Map:
             return False
 
     def move_org(self, org, new_location):
-        self.internal_map[new_location] = org
         self.internal_map[org.get_location()] = None
+        self.internal_map[new_location] = org
+
         # org.set_location(new_location)
 
     def do_on_all_neighbours(self, location, func):

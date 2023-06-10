@@ -1,7 +1,7 @@
 import pickle
 
 from Maps import SquareMap, HexMap
-from Organism import Organism, DEAD_STATE
+from Organism import Organism, DEAD_STATE, ALIVE_STATE
 
 SAVE_DIR = "saves/"
 
@@ -12,6 +12,8 @@ class World:
         self.turn = 0
         self.human = None
         self.map = None
+
+        self.turn_log = ""
 
     @classmethod
     def square_map(cls, width, height):
@@ -44,9 +46,13 @@ class World:
                 self.organisms.remove(organism)
 
     def make_turn(self):
+        self.turn_log = ""
+        self.sort_organisms()
+        self.clean_board()
         self.turn += 1
         for organism in self.organisms:
-            organism.action()
+            if organism.get_state() == ALIVE_STATE:
+                organism.action()
 
     def save(self, file_name):
         with open(SAVE_DIR + file_name, 'wb') as file:
@@ -74,3 +80,9 @@ class World:
 
     def get_human(self):
         return self.human
+
+    def get_turn_log(self):
+        return self.turn_log
+
+    def add_to_turn_log(self, text):
+        self.turn_log += text + "\n"

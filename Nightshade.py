@@ -17,4 +17,5 @@ class Nightshade(Plant):
         return "Nightshade at " + str(self.location)
 
     def collision(self, invader):
+        self.tlog(" poisoned " + str(invader))
         invader.kill_self()

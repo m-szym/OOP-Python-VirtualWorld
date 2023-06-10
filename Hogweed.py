@@ -30,5 +30,8 @@ class Hogweed(Plant):
 
 def hogweed_poison(imap, loc):
     t = imap[loc]
-    if t is not None and t.get_type() != "CYBER_SHEEP":
-        imap[loc].kill_self()
+    if t is not None:
+        if t.get_type() == "CYBER_SHEEP" or t.get_type() == "HOGWEED":
+            pass
+        else:
+            imap[loc].kill_self()

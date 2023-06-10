@@ -3,9 +3,8 @@ import pygame_gui as pgui
 
 import MapLocations
 import Maps
-from Sheep import Sheep
-from Wolf import Wolf
 from Menu import AddOrganismSubMenu
+import World
 
 BASE_WINDOW_WIDTH = 1000
 BASE_WINDOW_HEIGHT = 800
@@ -20,6 +19,22 @@ MENU_SPACE_WIDTH = BASE_WINDOW_WIDTH - LOG_TEXT_FIELD_WIDTH
 MENU_SPACE_HEIGHT = 200
 MENU_Y_OFFSET = BASE_WINDOW_HEIGHT - MENU_SPACE_HEIGHT
 MENU_BUTTON_SIZE = (75, 75)
+
+square_human_controls = [
+    pg.K_UP,
+    pg.K_DOWN,
+    pg.K_LEFT,
+    pg.K_RIGHT,
+]
+
+hex_human_controls = [
+    pg.K_w,
+    pg.K_e,
+    pg.K_d,
+    pg.K_x,
+    pg.K_z,
+    pg.K_a,
+]
 
 
 class Simulator:
@@ -38,18 +53,25 @@ class Simulator:
 
         self.init_visualizer()
 
-        if isinstance(self.world.map, Maps.SquareMap):
-            self.human_commands = self.square_human_commands()
-        else:
-            self.human_commands = self.hex_human_commands()
+        self.main_menu()
 
         self.run()
+
+    def init_player_controls(self):
+        if isinstance(self.world.map, Maps.SquareMap):
+            self.human_commands = self.square_human_commands
+            self.human_controls = square_human_controls
+        elif isinstance(self.world.map, Maps.HexMap):
+            self.human_commands = self.hex_human_commands
+            self.human_controls = hex_human_controls
+        else:
+            raise Exception("Unknown map type")
 
     def init_visualizer(self,
                         window_width=BASE_WINDOW_WIDTH,
                         window_height=BASE_WINDOW_HEIGHT,
                         window_title="Marek Szymanski 193229 ProgOb Projekt 3",
-                        background_color='#000000'):
+                        background_color='#ffffff'):
         self.w = window_width
         self.h = window_height
 
@@ -65,8 +87,10 @@ class Simulator:
 
         self.buttons = []
 
+    def init_game_visualizer(self):
         try:
             self.init_map_visualizer(self.world.map)
+            self.init_player_controls()
         except Exception as e:
             print(e)
             return
@@ -81,6 +105,21 @@ class Simulator:
             self.init_hex_map_visualizer(imap)
         else:
             raise Exception("Unknown map type")
+
+        self.icons = {
+            "Sheep": pg.image.load("icons/sheep.png"),
+            "Wolf": pg.image.load("icons/wolf.png"),
+            "Turtle": pg.image.load("icons/turtle.png"),
+            "Antelope": pg.image.load("icons/antelope.png"),
+            "Fox": pg.image.load("icons/fox.png"),
+            "Grass": pg.image.load("icons/grass.png"),
+            "Dandelion": pg.image.load("icons/dandelion.png"),
+            "Guarana": pg.image.load("icons/guarana.png"),
+            "Nightshade": pg.image.load("icons/nightshade.png"),
+            "Hogweed": pg.image.load("icons/hogweed.png"),
+            "Human": pg.image.load("icons/human.png"),
+            "CyberSheep": pg.image.load("icons/cybersheep.png"),
+        }
 
     def init_square_map_visualizer(self, imap):
         for y in range(imap.height):
@@ -127,14 +166,13 @@ class Simulator:
 
         self.load_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, MENU_Y_OFFSET),
                                                                         MENU_BUTTON_SIZE),
-                                                    text='Load',
-                                                    manager=self.manager)
+                                                  text='Load',
+                                                  manager=self.manager)
 
         self.save_button = pgui.elements.UIButton(relative_rect=pg.Rect((MENU_BUTTON_SIZE[0], MENU_Y_OFFSET),
                                                                         MENU_BUTTON_SIZE),
-                                                    text='Save',
-                                                    manager=self.manager)
-
+                                                  text='Save',
+                                                  manager=self.manager)
 
         self.ao_submenu = AddOrganismSubMenu(self.manager,
                                              self.world,
@@ -166,9 +204,8 @@ class Simulator:
     def update(self, time_delta):
         if self.world_change:
             self.update_map_visualizer()
+            self.log_text_field.set_text(self.world.get_turn_log())
             self.world_change = False
-
-        self.log_text_field.set_text(self.clog)
 
         self.manager.update(time_delta)
 
@@ -182,7 +219,9 @@ class Simulator:
             if self.world.map[button.map_location] is None:
                 button.set_text('')
             else:
-                button.set_text(self.world.map[button.map_location].get_type()[0])
+                if self.world.map[button.map_location].get_type() == "SHEEP":
+                    button.drawable_shape.states['normal'] = self.icons['Sheep']
+
 
     def manage_events(self):
         for event in pg.event.get():
@@ -192,28 +231,45 @@ class Simulator:
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.vis_running = False
-                else:
+
+                if not self.main_menu_active:
+                    if event.key in self.human_controls:
+                        self.human_commands(event.key)
+
                     self.world_change = True
                     self.world.make_turn()
-                    
+
             elif event.type == pgui.UI_BUTTON_PRESSED:
-                if event.ui_element == self.save_button:
-                    self.clog += "<br>Save button pressed"  #todo: world.save()
+                if not self.main_menu_active:
+                    if event.ui_element == self.save_button:
+                        self.clog += "<br>Save button pressed"  # todo: world.save()
 
-                elif event.ui_element == self.load_button:
-                    self.clog += "<br>Load button pressed"  #todo: world.load() re-init map visualizer and more ???
+                    elif event.ui_element == self.load_button:
+                        self.clog += "<br>Load button pressed"  # todo: world.load() re-init map visualizer and more ???
 
-                elif event.ui_element in self.ao_submenu:
-                    self.ao_submenu.manage_events(event)
+                    elif event.ui_element in self.ao_submenu:
+                        self.ao_submenu.manage_events(event)
+
+                    else:
+                        if event.ui_element in self.buttons:
+                            self.world_change = self.ao_submenu.add_org(event.ui_element.map_location)
+
+                        self.clog += "<br>Button {i} pressed".format(i=event.ui_element.text)
 
                 else:
-                    if event.ui_element in self.buttons:
-                        self.world_change = self.ao_submenu.add_org(event.ui_element.map_location)
+                    if event.ui_element == self.square_world_button:
+                        self.world = World.World.square_map(int(self.dimension_x_entry.get_text()),
+                                                            int(self.dimension_y_entry.get_text()))
+                        self.delete_main_menu()
+                        self.init_game_visualizer()
 
-                    self.clog += "<br>Button {i} pressed".format(i=event.ui_element.text)
+                    elif event.ui_element == self.hex_world_button:
+                        self.world = World.World.hex_map(int(self.dimension_x_entry.get_text()))
+                        self.delete_main_menu()
+                        self.init_game_visualizer()
 
             self.manager.process_events(event)
-            
+
     def hex_human_commands(self, key_pressed):
         if key_pressed == pg.K_w:
             self.world.get_human().give_command(103)
@@ -229,7 +285,7 @@ class Simulator:
             self.world.get_human().give_command(104)
         elif key_pressed == pg.K_SPACE:
             self.world.get_human().give_command(200)
-            
+
     def square_human_commands(self, key_pressed):
         if key_pressed == pg.K_UP:
             self.world.get_human().give_comamnd(103)
@@ -241,8 +297,30 @@ class Simulator:
             self.world.get_human().give_comamnd(102)
         elif key_pressed == pg.K_SPACE:
             self.world.get_human().give_command(200)
-            
 
+    def main_menu(self):
+        self.square_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 0), (100, 30)),
+                                                          text='Square world',
+                                                          manager=self.manager)
+        self.hex_world_button = pgui.elements.UIButton(relative_rect=pg.Rect((0, 40), (100, 30)),
+                                                       text='Hex world',
+                                                       manager=self.manager)
+        self.main_menu_active = True
 
+        self.dimension_x_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 80), (100, 30)),
+                                                               manager=self.manager)
+        self.dimension_y_entry = pgui.elements.UITextEntryLine(relative_rect=pg.Rect((0, 120), (100, 30)),
+                                                               manager=self.manager)
 
+    def delete_main_menu(self):
+        self.square_world_button.kill()
+        self.hex_world_button.kill()
+        self.dimension_x_entry.kill()
+        self.dimension_y_entry.kill()
 
+        del self.square_world_button
+        del self.hex_world_button
+        del self.dimension_x_entry
+        del self.dimension_y_entry
+
+        self.main_menu_active = False

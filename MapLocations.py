@@ -67,8 +67,8 @@ class SquareLocation(MapLocation):
         return SquareLocation((self.get_x() * scale,
                                self.get_y() * scale))
 
-    def get_neighbour_location(self, direction):
-        return self + SQUARE_DIRS[direction]
+    def get_neighbour_location(self, direction, distance=1):
+        return self + SQUARE_DIRS[direction] * distance
 
     def get_location_in_direction(self, direction, distance=1):
         return self + (direction * distance)
@@ -134,8 +134,8 @@ class HexLocation(MapLocation):
                             self.get_r() * scale,
                             self.get_s() * scale))
 
-    def get_neighbour_location(self, direction):
-        return self + HEX_DIRS[direction]
+    def get_neighbour_location(self, direction, distance=1):
+        return self + HEX_DIRS[direction] * distance
 
 
 HEX_DIRS = [

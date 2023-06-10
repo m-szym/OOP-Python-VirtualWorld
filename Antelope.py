@@ -25,6 +25,7 @@ class Antelope(Animal):
         if escape_chance > ANTELOPE_ESCAPE_CHANCE_THRESHOLD:
             new_location = self.get_map().get_first_free_neighbour(self.location)
             if new_location is not None:
+                self.tlog(" escaped to " + str(new_location))
                 self.update_location(new_location)
                 return True
         else:

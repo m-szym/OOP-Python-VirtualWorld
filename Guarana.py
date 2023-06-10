@@ -18,5 +18,6 @@ class Guarana(Plant):
         return "Guarana at " + str(self.location)
 
     def collision(self, invader):
+        invader.tlog(" ate " + str(self)  + " and gained +" + str(GUARANA_STRENGTH_BONUS) + " Strength")
         invader.set_strength(invader.get_strength() + GUARANA_STRENGTH_BONUS)
         self.kill_self()

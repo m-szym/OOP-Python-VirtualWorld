@@ -21,7 +21,7 @@ class Animal(Organism):
         if new_direction == self.get_map().directions_num:
             return self.location
         else:
-            new_location = self.location.get_neighbour_location(new_direction)
+            new_location = self.location.get_neighbour_location(new_direction, self.get_speed())
 
             if self.get_map().on_map(new_location):
                 return new_location
@@ -32,19 +32,21 @@ class Animal(Organism):
         new_location = self.choose_new_location()
 
         if new_location != self.location:
-            print(str(self) + " might move to " + str(new_location))
+            # print(str(self) + " might move to " + str(new_location))
             t = self.get_map()[new_location]
             if t is not None:
                 self.pre_collision(t)
             else:
+
                 self.update_location(new_location)
-        else:
-            print(str(self) + " did not move")
+        # else:
+        #     print(str(self) + " did not move")
 
     def mate(self):
         new_location = self.get_map().get_first_free_neighbour(self.location)
 
         if new_location is not None:
+            self.tlog(" mates")
             return self.world.add_organism(self.spawn_offspring(new_location))
         else:
             return None
@@ -61,7 +63,7 @@ class Animal(Organism):
     def collision(self, invader):
         if invader.get_type() == self.get_type():
             self.mate()
-        elif not invader.reflect_attack(self):
+        elif not self.reflect_attack(invader):
             super().collision(invader)
 
     def __str__(self):

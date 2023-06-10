@@ -1,8 +1,18 @@
 import pygame as pg
 import pygame_gui as pgui
 
+from Fox import Fox
 from Sheep import Sheep
 from Wolf import Wolf
+from Turtle import Turtle
+from Antelope import Antelope
+from CyberSheep import CyberSheep
+from Grass import Grass
+from Dandelion import Dandelion
+from Guarana import Guarana
+from Nightshade import Nightshade
+from Hogweed import Hogweed
+
 
 
 class AddOrganismSubMenu():
@@ -24,6 +34,13 @@ class AddOrganismSubMenu():
                                                       text="WOLF",
                                                       manager=self.manager)
         self.buttons.append(self.add_wolf_button)
+        
+        self.add_grass_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET + MENU_BUTTON_SIZE[1]),
+                                                                            MENU_BUTTON_SIZE),
+                                                      text="GRASS",
+                                                      manager=self.manager)
+        self.buttons.append(self.add_grass_button)
+
         next_button_x += MENU_BUTTON_SIZE[0]
 
         self.add_sheep_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET),
@@ -31,6 +48,13 @@ class AddOrganismSubMenu():
                                                        text="SHEEP",
                                                        manager=self.manager)
         self.buttons.append(self.add_sheep_button)
+        
+        self.add_dandelion_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET + MENU_BUTTON_SIZE[1]),
+                                                                             MENU_BUTTON_SIZE),
+                                                       text="DANDELION",
+                                                       manager=self.manager)
+        self.buttons.append(self.add_dandelion_button)
+        
         next_button_x += MENU_BUTTON_SIZE[0]
 
         self.add_fox_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET),
@@ -38,6 +62,41 @@ class AddOrganismSubMenu():
                                                      text="FOX",
                                                      manager=self.manager)
         self.buttons.append(self.add_fox_button)
+
+        self.add_nightshade_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET + MENU_BUTTON_SIZE[1]),
+                                                                             MENU_BUTTON_SIZE),
+                                                       text="NIGHTSAHDE",
+                                                       manager=self.manager)
+        self.buttons.append(self.add_nightshade_button)
+        
+        next_button_x += MENU_BUTTON_SIZE[0]
+
+        self.add_turtle_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET),
+                                                                           MENU_BUTTON_SIZE),
+                                                     text="TURTLE",
+                                                     manager=self.manager)
+        self.buttons.append(self.add_turtle_button)
+
+        self.add_guarana_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET + MENU_BUTTON_SIZE[1]),
+                                                                             MENU_BUTTON_SIZE),
+                                                       text="GUARANA",
+                                                       manager=self.manager)
+        self.buttons.append(self.add_guarana_button)
+        
+        next_button_x += MENU_BUTTON_SIZE[0]
+
+        self.add_antelope_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET),
+                                                                           MENU_BUTTON_SIZE),
+                                                     text="ANTELOPE",
+                                                     manager=self.manager)
+        self.buttons.append(self.add_antelope_button)
+
+        self.add_hogweed_button = pgui.elements.UIButton(relative_rect=pg.Rect((next_button_x, MENU_Y_OFFSET + MENU_BUTTON_SIZE[1]),
+                                                                                MENU_BUTTON_SIZE),
+                                                          text="HOGWEED",
+                                                          manager=self.manager)
+        self.buttons.append(self.add_hogweed_button)
+        
         next_button_x += MENU_BUTTON_SIZE[0]
 
     def __contains__(self, button):
@@ -53,6 +112,22 @@ class AddOrganismSubMenu():
             self.o_to_add = "SHEEP"
         elif event.ui_element == self.add_fox_button:
             self.o_to_add = "FOX"
+        elif event.ui_element == self.add_turtle_button:
+            self.o_to_add = "TURTLE"
+        elif event.ui_element == self.add_antelope_button:
+            self.o_to_add = "ANTELOPE"
+
+        elif event.ui_element == self.add_grass_button:
+            self.o_to_add = "GRASS"
+        elif event.ui_element == self.add_dandelion_button:
+            self.o_to_add = "DANDELION"
+        elif event.ui_element == self.add_nightshade_button:
+            self.o_to_add = "NIGHTSAHDE"
+        elif event.ui_element == self.add_guarana_button:
+            self.o_to_add = "GUARANA"
+        elif event.ui_element == self.add_hogweed_button:
+            self.o_to_add = "HOGWEED"
+
         else:
             self.o_to_add = None
 
@@ -72,6 +147,23 @@ class AddOrganismSubMenu():
                 elif self.o_to_add == "WOLF":
                     self.world.add_organism(Wolf(self.world, location))
                     # self.clog += "<br>Adding wolf to {loc}".format(loc=location)
+                elif self.o_to_add == "FOX":
+                    self.world.add_organism(Fox(self.world, location))
+                elif self.o_to_add == "TURTLE":
+                    self.world.add_organism(Turtle(self.world, location))
+                elif self.o_to_add == "ANTELOPE":
+                    self.world.add_organism(Antelope(self.world, location))
+
+                elif self.o_to_add == "GRASS":
+                    self.world.add_organism(Grass(self.world, location))
+                elif self.o_to_add == "DANDELION":
+                    self.world.add_organism(Dandelion(self.world, location))
+                elif self.o_to_add == "NIGHTSAHDE":
+                    self.world.add_organism(Nightshade(self.world, location))
+                elif self.o_to_add == "GUARANA":
+                    self.world.add_organism(Guarana(self.world, location))
+                elif self.o_to_add == "HOGWEED":
+                    self.world.add_organism(Hogweed(self.world, location))
 
                 self.o_to_add = None
                 return True

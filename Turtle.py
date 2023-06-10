@@ -23,6 +23,7 @@ class Turtle(Animal):
 
     def reflect_attack(self, attacker):
         if attacker.get_strength() < TURTLE_DEFENCE:
+            self.tlog(" reflects attack from " + str(attacker))
             return True
         else:
             return False
@@ -32,4 +33,5 @@ class Turtle(Animal):
 
         if r >= TURTLE_MOVEMENT_THRESHOLD:
             super().move()
-        # TODO: logger
+        else:
+            self.tlog(" slumbers")

@@ -1,5 +1,5 @@
-from Animal import Animal, BASE_ANIMAL_SPEED
-from Organism import ORGANISM_TYPES
+from simulator.organisms.animals.Animal import Animal, BASE_ANIMAL_SPEED
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 CYBER_SHEEP_STRENGTH = 11
 CYBER_SHEEP_INITIATIVE = 4

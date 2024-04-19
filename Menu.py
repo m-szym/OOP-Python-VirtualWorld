@@ -1,17 +1,17 @@
 import pygame as pg
 import pygame_gui as pgui
 
-from Fox import Fox
-from Sheep import Sheep
-from Wolf import Wolf
-from Turtle import Turtle
-from Antelope import Antelope
-from CyberSheep import CyberSheep
-from Grass import Grass
-from Dandelion import Dandelion
-from Guarana import Guarana
-from Nightshade import Nightshade
-from Hogweed import Hogweed
+from simulator.organisms.animals.Antelope import Antelope
+from simulator.organisms.animals.CyberSheep import CyberSheep
+from simulator.organisms.animals.Fox import Fox
+from simulator.organisms.animals.Sheep import Sheep
+from simulator.organisms.animals.Turtle import Turtle
+from simulator.organisms.animals.Wolf import Wolf
+from simulator.organisms.plants.Dandelion import Dandelion
+from simulator.organisms.plants.Guarana import Guarana
+from simulator.organisms.plants.Grass import Grass
+from simulator.organisms.plants.Hogweed import Hogweed
+from simulator.organisms.plants.Nightshade import Nightshade
 
 
 class AddOrganismSubMenu():
@@ -146,20 +146,16 @@ class AddOrganismSubMenu():
 
     def add_org(self, location):
         if self.world.map[location] is not None:
-            # self.clog += "<br>Cannot add organism to {loc} - location is not empty".format(loc=location)
             return False
         else:
             if self.o_to_add is None:
-                # self.clog += "<br>Cannot add organism - no organism selected"
                 return False
             else:
                 world_change = True
                 if self.o_to_add == "SHEEP":
-                    # self.clog += "<br>Adding sheep to {loc}".format(loc=location)
                     self.world.add_organism(Sheep(self.world, location))
                 elif self.o_to_add == "WOLF":
                     self.world.add_organism(Wolf(self.world, location))
-                    # self.clog += "<br>Adding wolf to {loc}".format(loc=location)
                 elif self.o_to_add == "FOX":
                     self.world.add_organism(Fox(self.world, location))
                 elif self.o_to_add == "TURTLE":

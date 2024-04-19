@@ -1,7 +1,7 @@
 import pickle
 
 from Maps import SquareMap, HexMap
-from Organism import Organism, DEAD_STATE, ALIVE_STATE
+from simulator.organisms.Organism import Organism, DEAD_STATE, ALIVE_STATE
 
 SAVE_DIR = "saves/"
 

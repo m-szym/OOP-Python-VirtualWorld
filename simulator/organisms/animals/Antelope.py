@@ -1,7 +1,7 @@
 from random import randint
 
-from Animal import Animal
-from Organism import ORGANISM_TYPES
+from simulator.organisms.animals.Animal import Animal
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 ANTELOPE_STRENGTH = 4
 ANTELOPE_INITIATIVE = 4

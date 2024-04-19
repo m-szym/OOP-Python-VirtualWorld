@@ -1,5 +1,5 @@
-from Plant import *
-from Organism import ORGANISM_TYPES
+from simulator.organisms.plants.Plant import *
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 GRASS_SEEDING_THRESHOLD = BASE_PLANT_SEEDING_THRESHOLD
 GRASS_STRENGTH = BASE_PLANT_STRENGTH

@@ -5,7 +5,7 @@ import MapLocations
 import Maps
 
 import World as w
-from Human import Human
+from simulator.organisms.animals.Human import Human
 from Sheep import Sheep
 from Wolf import Wolf
 

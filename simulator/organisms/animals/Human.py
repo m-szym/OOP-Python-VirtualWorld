@@ -1,5 +1,5 @@
-from Animal import Animal, BASE_ANIMAL_SPEED
-from Organism import ORGANISM_TYPES
+from simulator.organisms.animals.Animal import Animal, BASE_ANIMAL_SPEED
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 HUMAN_STRENGTH = 5
 HUMAN_INITIATIVE = 4

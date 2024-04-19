@@ -1,5 +1,5 @@
-from Plant import *
-from Organism import ORGANISM_TYPES
+from simulator.organisms.plants.Plant import *
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 GUARANA_SEEDING_THRESHOLD = BASE_PLANT_SEEDING_THRESHOLD
 GUARANA_STRENGTH = BASE_PLANT_STRENGTH

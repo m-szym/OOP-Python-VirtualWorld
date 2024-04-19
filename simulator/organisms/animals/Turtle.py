@@ -1,7 +1,7 @@
 from random import randint
 
-from Animal import Animal, BASE_ANIMAL_SPEED
-from Organism import ORGANISM_TYPES
+from simulator.organisms.animals.Animal import Animal, BASE_ANIMAL_SPEED
+from simulator.organisms.Organism import ORGANISM_TYPES
 
 TURTLE_STRENGTH = 2
 TURTLE_INITIATIVE = 1

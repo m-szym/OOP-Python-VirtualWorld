@@ -1,6 +1,6 @@
 import random
 
-from Organism import Organism
+from simulator.organisms.Organism import Organism
 
 SEEDING_CHANCE_BASE = 100
 BASE_PLANT_SEEDING_THRESHOLD = 97

@@ -1,11 +1,11 @@
 import pygame as pg
 import pygame_gui as pgui
 
-import MapLocations
-import Maps
-from Human import Human
+from simulator.MapLocations import MapLocations
+from simulator.Maps import Maps
+from simulator.World import World
+from simulator.organisms.animals.Human import Human
 from Menu import AddOrganismSubMenu
-import World
 
 BASE_WINDOW_WIDTH = 1000
 BASE_WINDOW_HEIGHT = 800
